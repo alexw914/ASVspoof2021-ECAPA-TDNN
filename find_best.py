@@ -6,7 +6,7 @@ from tools.dataset_loader import ASVDataset
 from tools.evaluate import eval_to_score_file
 
 
-file_root = "./scores/Res2block-down4-aug-MHA3-scorefiles"
+file_root = "./scores/Res2block-ASP-scorefiles"
 score_files = glob.glob('%s/cm_score*.txt'%file_root)
 score_files.sort()
 EER =[] 

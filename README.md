@@ -22,9 +22,9 @@ python main.py
 ```
 
 ### Test
-All the scorefile will be store in scores folder. This algorithm will test EER and min-tDCF of progres set in every epoch.
+All the scorefiles will be store in scores folder. This algorithm will test EER and min-tDCF of progres set in every epoch.
 
-You should change the folder in find_best.py to find the best checkpoints in progress phase And you can test it in eval phase.
+You should change the score_file_root in find_best.py to find the best checkpoints in progress phase. And you can test it in eval phase.
 
 To test the model run:
 ```

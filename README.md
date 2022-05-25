@@ -1,6 +1,6 @@
 # ASVspoof 2021 LA Spoof Speech Detection System 
 
-A voice spoofing detection system, based on ECAPA-TDNN. This project mainly follow these [project](https://github.com/pabdzadeh/voice-spoof-detection-system).
+A voice spoofing detection system, based on ECAPA-TDNN. This project mainly follow these [project](https://github.com/pabdzadeh/voice-spoof-detection-system). If you want do some research or improve the architecture, you can refer this [repo](https://github.com/yzyouzhang/ASVspoof2021_AIR). It provides the way of augment and some tips to train a more robust network.
 
 ## Installation
 

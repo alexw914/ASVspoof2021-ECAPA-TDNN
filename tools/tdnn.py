@@ -242,29 +242,6 @@ class TDNN(nn.Module):
     def __init__(self, channel, feature_dim, pooling_way,context=True, **kwargs):
         super(TDNN, self).__init__()
         
-
-        mha_pooling_params = {
-            "num_head":4,
-            "hidden_size":128,
-            "share":True,
-            "affine_layers":1,
-            "context":[0],
-            "stddev":True,
-            "temperature":False, 
-            "fixed":True
-        }
-
-        gmh_pooling_params = {
-            "num_head":2,
-            "hidden_size":128,
-            "share":True,
-            "affine_layers":1,
-            "context":[0],
-            "stddev":True,
-            "temperature":False, 
-            "fixed":True
-        }
-
         self.pooling_way = pooling_way
         self.context     = context
 
@@ -278,7 +255,6 @@ class TDNN(nn.Module):
         
 
         self.layer5 = nn.Conv1d(3*channel, channel*3, kernel_size=1)
-        # self.afm  = AFM(channel)
         
         cat_channel = channel*3
 
@@ -309,12 +285,6 @@ class TDNN(nn.Module):
         x1 = self.layer1(x)
         x2 = self.layer2(x1+x)
         x3 = self.layer3(x2+x1+x)
-
-        # afm_up1 = self.afm(x1,x2)
-        # afm_up2 = self.afm(afm_up1,x3)
-
-        # afm_down1 = self.afm(x3, x2)
-        # afm_down2 = self.afm(afm_down1, x1)
 
         x = self.layer5(torch.cat((x1,x2,x3), dim=1))
         x = self.relu(x)

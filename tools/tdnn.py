@@ -239,7 +239,7 @@ class AFM(nn.Module):
 
 class TDNN(nn.Module):
 
-    def __init__(self, channel, feature_dim, pooling_way,context=True, **kwargs):
+    def __init__(self, channel, feature_dim, context=True, **kwargs):
         super(TDNN, self).__init__()
         
         self.pooling_way = pooling_way
@@ -257,24 +257,11 @@ class TDNN(nn.Module):
         self.layer5 = nn.Conv1d(3*channel, channel*3, kernel_size=1)
         
         cat_channel = channel*3
+        
+        self.pooling = AttentiveStatsPool(cat_channel, 128, context=True)
+        self.bn5 = nn.BatchNorm1d(cat_channel * 2)
+        self.fc6 = nn.Linear(cat_channel * 2, 256)
 
-        if  self.pooling_way == "ASP":
-
-            self.pooling = AttentiveStatsPool(cat_channel, 128, context=True)
-            self.bn5 = nn.BatchNorm1d(cat_channel * 2)
-            self.fc6 = nn.Linear(cat_channel * 2, 256)
-
-        if self.pooling_way == "MHA":
-
-            self.pooling = MlutiheadAttentiveStatsPool(cat_channel, bottleneck_dim=128)
-            self.bn5 = nn.BatchNorm1d(cat_channel * 2 * 2)
-            self.fc6 = nn.Linear(cat_channel * 2* 2, 256)
-
-        if self.pooling_way == "MHA3":
-
-            self.pooling = MlutiheadAttentiveStatsPool3(cat_channel, bottleneck_dim=128)
-            self.bn5 = nn.BatchNorm1d(cat_channel * 2 * 3)
-            self.fc6 = nn.Linear(cat_channel * 2 * 3, 256)
 
     def forward(self, x):
         
@@ -288,22 +275,10 @@ class TDNN(nn.Module):
 
         x = self.layer5(torch.cat((x1,x2,x3), dim=1))
         x = self.relu(x)
-        if self.pooling_way == "ASP":
-            x = self.bn5(self.pooling(x))
-            x = self.fc6(x)
-            return x
-
-        if self.pooling_way == "MHA" :
-            x, p = self.pooling(x)
-            x    = self.bn5(x)
-            x = self.fc6(x)
-            return x, p.mean()
-
-        if self.pooling_way == "MHA3" :
-            x, p = self.pooling(x)
-            x    = self.bn5(x)
-            x = self.fc6(x)
-            return x, p.mean()
+        x = self.bn5(self.pooling(x))
+        x = self.fc6(x)
+        
+        return x
 
 
 class GradientReversalFunction(Function):

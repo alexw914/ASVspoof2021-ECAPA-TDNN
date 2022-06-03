@@ -242,7 +242,6 @@ class TDNN(nn.Module):
     def __init__(self, channel, feature_dim, context=True, **kwargs):
         super(TDNN, self).__init__()
         
-        self.pooling_way = pooling_way
         self.context     = context
 
         self.conv1 = nn.Conv1d(feature_dim, channel, kernel_size=5, stride=1, padding=2)

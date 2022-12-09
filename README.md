@@ -30,4 +30,5 @@ To test the model run:
 ```
 python test.py --model_index $(best epoch)
 ```
-
+### Warning
+The result of this project may not very well because in ASVspoof 2021 challenge， the problem of codec transmisson and compression is introduced. There are many ways you can solve it. This [repo](https://github.com/alexw914/ASVspoof_CM) and can help you.
